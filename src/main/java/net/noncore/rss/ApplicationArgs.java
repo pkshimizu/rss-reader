@@ -11,7 +11,7 @@ import java.util.List;
 public class ApplicationArgs {
     @Option(name = "-i", aliases = "--input", required = true, usage = "Input Resource")
     private String inputResource;
-    @Option(name = "-c", aliases = "--converts", required = false, usage = "Convert Types(cut, name)", handler = ConvertTypesOptionHandler.class)
+    @Option(name = "-c", aliases = "--converts", required = false, usage = "Convert Types(cut, name)")
     private List<ConvertType> convertTypes;
     @Option(name = "-o", aliases = "--output", required = false, usage = "Output Path")
     private File outputPath;
