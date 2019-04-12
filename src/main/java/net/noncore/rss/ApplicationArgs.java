@@ -9,8 +9,8 @@ import java.util.List;
 
 @Getter
 public class ApplicationArgs {
-    @Option(name = "-i", aliases = "--input", required = true, usage = "Input Resource")
-    private String inputResource;
+    @Option(name = "-i", aliases = "--input", required = true, usage = "Input Resource(file or url)", handler = InputResourceHandler.class)
+    private InputResource inputResource;
     @Option(name = "-c", aliases = "--converts", required = false, usage = "Convert Types(cut, name)")
     private List<ConvertType> convertTypes;
     @Option(name = "-o", aliases = "--output", required = false, usage = "Output Path")
