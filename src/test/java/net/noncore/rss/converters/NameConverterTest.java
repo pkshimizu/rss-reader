@@ -46,4 +46,12 @@ public class NameConverterTest {
         assertThat(result.getTitle(), is("タイトル"));
         assertThat(result.getBody(), is("本文：UZABASE"));
     }
+
+    @Test
+    public void 本文にユーザベースを複数含んでいる場合() {
+        Article article = new Article("タイトル", "本文：ユーザベース・・・ユーザベース");
+        Article result = converter.convert(article);
+        assertThat(result.getTitle(), is("タイトル"));
+        assertThat(result.getBody(), is("本文：UZABASE・・・UZABASE"));
+    }
 }

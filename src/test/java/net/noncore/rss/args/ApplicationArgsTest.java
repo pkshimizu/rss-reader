@@ -1,8 +1,7 @@
 package net.noncore.rss.args;
 
-import net.noncore.rss.args.ApplicationArgs;
-import net.noncore.rss.converters.CompositeRssConverter;
-import net.noncore.rss.writers.StdoutRssWriter;
+import net.noncore.rss.converters.CompositeArticleConverter;
+import net.noncore.rss.writers.StdoutArticleWriter;
 import net.noncore.rss.readers.FileRssReader;
 import net.noncore.rss.readers.NetRssReader;
 import org.junit.After;
@@ -39,15 +38,15 @@ public class ApplicationArgsTest {
     public void inputでURL指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss");
         assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
-        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
+        assertThat(appArgs.createArticleConverter(), is(instanceOf(CompositeArticleConverter.class)));
+        assertThat(appArgs.createArticleWriter(), is(instanceOf(StdoutArticleWriter.class)));
     }
     @Test
     public void inputでファイル指定() throws CmdLineException {
         parser.parseArgument("-i", "src/test/resources/articles.txt");
         assertThat(appArgs.createRssReader(), is(instanceOf(FileRssReader.class)));
-        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
-        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
+        assertThat(appArgs.createArticleConverter(), is(instanceOf(CompositeArticleConverter.class)));
+        assertThat(appArgs.createArticleWriter(), is(instanceOf(StdoutArticleWriter.class)));
     }
     @Test(expected = CmdLineException.class)
     public void inputなしでconvert指定() throws CmdLineException {
@@ -61,15 +60,15 @@ public class ApplicationArgsTest {
     public void convert１つ指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-c", "name");
         assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
-        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
+        assertThat(appArgs.createArticleConverter(), is(instanceOf(CompositeArticleConverter.class)));
+        assertThat(appArgs.createArticleWriter(), is(instanceOf(StdoutArticleWriter.class)));
     }
     @Test
     public void inputとconvert２つ指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-c", "name", "-c", "cut");
         assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
-        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
+        assertThat(appArgs.createArticleConverter(), is(instanceOf(CompositeArticleConverter.class)));
+        assertThat(appArgs.createArticleWriter(), is(instanceOf(StdoutArticleWriter.class)));
     }
     @Test(expected = CmdLineException.class)
     public void 存在しないinputを指定() throws CmdLineException {
@@ -79,7 +78,7 @@ public class ApplicationArgsTest {
     public void すべての引数を指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-o", "output.txt");
         assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
-        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
+        assertThat(appArgs.createArticleConverter(), is(instanceOf(CompositeArticleConverter.class)));
+        assertThat(appArgs.createArticleWriter(), is(instanceOf(StdoutArticleWriter.class)));
     }
 }

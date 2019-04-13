@@ -5,10 +5,10 @@ import net.noncore.rss.Article;
 import java.util.Collections;
 import java.util.List;
 
-public class CompositeRssConverter implements ArticleConverter {
+public class CompositeArticleConverter implements ArticleConverter {
     List<ArticleConverter> converters;
 
-    public CompositeRssConverter(List<ArticleConverter> converters) {
+    public CompositeArticleConverter(List<ArticleConverter> converters) {
         this.converters = Collections.unmodifiableList(converters);
     }
 

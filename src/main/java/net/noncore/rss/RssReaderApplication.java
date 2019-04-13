@@ -2,7 +2,7 @@ package net.noncore.rss;
 
 import net.noncore.rss.args.ApplicationArgs;
 import net.noncore.rss.converters.ArticleConverter;
-import net.noncore.rss.writers.RssWriter;
+import net.noncore.rss.writers.ArticleWriter;
 import net.noncore.rss.parsers.RssParser;
 import net.noncore.rss.readers.RssReader;
 import org.kohsuke.args4j.CmdLineException;
@@ -26,10 +26,10 @@ public class RssReaderApplication {
         RssParser parser = appArgs.createRssParser();
         List<Article> articles = parser.parse(reader.read());
 
-        ArticleConverter converter = appArgs.createRssConverter();
+        ArticleConverter converter = appArgs.createArticleConverter();
         articles = articles.stream().map(converter::convert).collect(Collectors.toList());
 
-        RssWriter writer = appArgs.createRssWriter();
+        ArticleWriter writer = appArgs.createArticleWriter();
         writer.write(articles);
     }
 }
