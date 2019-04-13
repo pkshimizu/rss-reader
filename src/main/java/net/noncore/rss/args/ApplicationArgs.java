@@ -19,7 +19,7 @@ public class ApplicationArgs {
     @Option(name = "-i", aliases = "--input", required = true, usage = "Input Resource(file or url)",
             handler = InputResourceHandler.class)
     private InputResource inputResource;
-    @Option(name = "-c", aliases = "--converts", required = false, usage = "Convert Types")
+    @Option(name = "-c", aliases = "--convert", required = false, usage = "Convert Types")
     private List<ConvertType> convertTypes;
     @Option(name = "-o", aliases = "--output", required = false, usage = "Output Path")
     private File file;
