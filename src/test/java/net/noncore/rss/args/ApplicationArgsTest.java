@@ -1,4 +1,4 @@
-package net.noncore.rss;
+package net.noncore.rss.args;
 
 import net.noncore.rss.args.ApplicationArgs;
 import net.noncore.rss.converters.CompositeRssConverter;

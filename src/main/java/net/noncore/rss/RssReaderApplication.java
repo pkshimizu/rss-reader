@@ -1,7 +1,7 @@
 package net.noncore.rss;
 
 import net.noncore.rss.args.ApplicationArgs;
-import net.noncore.rss.converters.RssConverter;
+import net.noncore.rss.converters.ArticleConverter;
 import net.noncore.rss.writers.RssWriter;
 import net.noncore.rss.parsers.RssParser;
 import net.noncore.rss.readers.RssReader;
@@ -26,7 +26,7 @@ public class RssReaderApplication {
         RssParser parser = appArgs.createRssParser();
         List<Article> articles = parser.parse(reader.read());
 
-        RssConverter converter = appArgs.createRssConverter();
+        ArticleConverter converter = appArgs.createRssConverter();
         articles = articles.stream().map(converter::convert).collect(Collectors.toList());
 
         RssWriter writer = appArgs.createRssWriter();

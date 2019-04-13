@@ -5,16 +5,16 @@ import net.noncore.rss.Article;
 import java.util.Collections;
 import java.util.List;
 
-public class CompositeRssConverter implements RssConverter {
-    List<RssConverter> converters;
+public class CompositeRssConverter implements ArticleConverter {
+    List<ArticleConverter> converters;
 
-    public CompositeRssConverter(List<RssConverter> converters) {
+    public CompositeRssConverter(List<ArticleConverter> converters) {
         this.converters = Collections.unmodifiableList(converters);
     }
 
     @Override
     public Article convert(Article article) {
-        for (RssConverter converter : converters) {
+        for (ArticleConverter converter : converters) {
             article = converter.convert(article);
         }
         return article;

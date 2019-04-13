@@ -1,5 +1,6 @@
-package net.noncore.rss;
+package net.noncore.rss.parsers;
 
+import net.noncore.rss.Article;
 import net.noncore.rss.parsers.TextRssParser;
 import org.junit.After;
 import org.junit.Before;

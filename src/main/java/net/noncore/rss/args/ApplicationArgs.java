@@ -2,7 +2,7 @@ package net.noncore.rss.args;
 
 import net.noncore.rss.converters.CompositeRssConverter;
 import net.noncore.rss.converters.ConvertType;
-import net.noncore.rss.converters.RssConverter;
+import net.noncore.rss.converters.ArticleConverter;
 import net.noncore.rss.writers.RssWriter;
 import net.noncore.rss.parsers.RssParser;
 import net.noncore.rss.readers.RssReader;
@@ -40,7 +40,7 @@ public class ApplicationArgs {
         return inputResource.createRssParser();
     }
 
-    public RssConverter createRssConverter() {
+    public ArticleConverter createRssConverter() {
         if (convertTypes == null) {
             return new CompositeRssConverter(Collections.emptyList());
         }

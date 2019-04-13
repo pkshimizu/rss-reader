@@ -3,18 +3,18 @@ package net.noncore.rss.converters;
 public enum ConvertType {
     CUT() {
         @Override
-        public RssConverter createConverter() {
-            return null;
+        public ArticleConverter createConverter() {
+            return new CutConverter();
         }
     },
     NAME() {
         @Override
-        public RssConverter createConverter() {
-            return null;
+        public ArticleConverter createConverter() {
+            return new NameConverter();
         }
     };
 
-    public RssConverter createConverter() {
+    public ArticleConverter createConverter() {
         return null;
     }
 }
