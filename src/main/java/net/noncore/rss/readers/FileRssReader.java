@@ -1,6 +1,10 @@
 package net.noncore.rss.readers;
 
-import java.io.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 
 public class FileRssReader implements RssReader {
     private File file;
@@ -10,7 +14,7 @@ public class FileRssReader implements RssReader {
     }
 
     @Override
-    public InputStream read() throws IOException {
-        return new FileInputStream(file);
+    public Reader read() throws IOException {
+        return new FileReader(file);
     }
 }

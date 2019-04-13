@@ -1,8 +1,8 @@
 package net.noncore.rss.readers;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 
 public interface RssReader {
-    InputStream read() throws IOException;
+    Reader read() throws IOException;
 }

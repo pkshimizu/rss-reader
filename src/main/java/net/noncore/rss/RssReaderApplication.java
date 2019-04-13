@@ -9,6 +9,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +23,16 @@ public class RssReaderApplication {
             e.getParser().printUsage(System.out);
             return;
         }
-        RssReader reader = appArgs.createRssReader();
+
+        RssReader rssReader = appArgs.createRssReader();
         RssParser parser = appArgs.createRssParser();
-        List<Article> articles = parser.parse(reader.read());
+        try (Reader reader = rssReader.read()) {
+            List<Article> articles = parser.parse(reader);
+            ArticleConverter converter = appArgs.createArticleConverter();
+            articles = articles.stream().map(converter::convert).collect(Collectors.toList());
 
-        ArticleConverter converter = appArgs.createArticleConverter();
-        articles = articles.stream().map(converter::convert).collect(Collectors.toList());
-
-        ArticleWriter writer = appArgs.createArticleWriter();
-        writer.write(articles);
+            ArticleWriter writer = appArgs.createArticleWriter();
+            writer.write(articles);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package net.noncore.rss.args;
 
 import net.noncore.rss.converters.CompositeArticleConverter;
+import net.noncore.rss.writers.FileArticleWriter;
 import net.noncore.rss.writers.StdoutArticleWriter;
 import net.noncore.rss.readers.FileRssReader;
 import net.noncore.rss.readers.NetRssReader;
@@ -79,6 +80,6 @@ public class ApplicationArgsTest {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-o", "output.txt");
         assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
         assertThat(appArgs.createArticleConverter(), is(instanceOf(CompositeArticleConverter.class)));
-        assertThat(appArgs.createArticleWriter(), is(instanceOf(StdoutArticleWriter.class)));
+        assertThat(appArgs.createArticleWriter(), is(instanceOf(FileArticleWriter.class)));
     }
 }

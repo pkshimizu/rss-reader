@@ -10,6 +10,7 @@ import org.junit.runners.JUnit4;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -32,7 +33,7 @@ public class TextRssParserTest {
 
     @Test
     public void 空のテキスト() throws IOException {
-        List<Article> articles = parser.parse(new ByteArrayInputStream(buffer.toString().getBytes("UTF-8")));
+        List<Article> articles = parser.parse(new StringReader(buffer.toString()));
         assertThat(articles.size(), is(0));
     }
 
@@ -40,7 +41,7 @@ public class TextRssParserTest {
     public void 記事１つ() throws IOException {
         buffer.append("title: タイトル\n");
         buffer.append("body: 本文");
-        List<Article> articles = parser.parse(new ByteArrayInputStream(buffer.toString().getBytes("UTF-8")));
+        List<Article> articles = parser.parse(new StringReader(buffer.toString()));
         assertThat(articles.size(), is(1));
 
         Article article1 = articles.get(0);
@@ -51,21 +52,21 @@ public class TextRssParserTest {
     @Test
     public void タイトルのみはスキップする() throws IOException {
         buffer.append("title: タイトル");
-        List<Article> articles = parser.parse(new ByteArrayInputStream(buffer.toString().getBytes("UTF-8")));
+        List<Article> articles = parser.parse(new StringReader(buffer.toString()));
         assertThat(articles.size(), is(0));
     }
 
     @Test
     public void 本文がないときはスキップする() throws IOException {
         buffer.append("title: タイトル\n");
-        List<Article> articles = parser.parse(new ByteArrayInputStream(buffer.toString().getBytes("UTF-8")));
+        List<Article> articles = parser.parse(new StringReader(buffer.toString()));
         assertThat(articles.size(), is(0));
     }
 
     @Test
     public void titleから始まらないときはスキップする() throws IOException {
         buffer.append("body: 本文\n");
-        List<Article> articles = parser.parse(new ByteArrayInputStream(buffer.toString().getBytes("UTF-8")));
+        List<Article> articles = parser.parse(new StringReader(buffer.toString()));
         assertThat(articles.size(), is(0));
     }
 
@@ -75,7 +76,7 @@ public class TextRssParserTest {
         buffer.append("body: 本文1\n");
         buffer.append("title: タイトル2\n");
         buffer.append("body: 本文2\n");
-        List<Article> articles = parser.parse(new ByteArrayInputStream(buffer.toString().getBytes("UTF-8")));
+        List<Article> articles = parser.parse(new StringReader(buffer.toString()));
         assertThat(articles.size(), is(2));
 
         Article article1 = articles.get(0);

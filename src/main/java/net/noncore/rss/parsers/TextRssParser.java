@@ -10,10 +10,9 @@ import java.util.regex.Pattern;
 
 public class TextRssParser implements RssParser {
     @Override
-    public List<Article> parse(InputStream input) throws IOException {
+    public List<Article> parse(Reader reader) throws IOException {
         List<Article> articles = new ArrayList<>();
         try (
-                Reader reader = new InputStreamReader(input);
                 BufferedReader bufferedReader = new BufferedReader(reader);
         ) {
             Pattern titlePattern = Pattern.compile("title: (.*)");
