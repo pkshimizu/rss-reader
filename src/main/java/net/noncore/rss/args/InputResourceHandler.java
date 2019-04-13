@@ -1,4 +1,4 @@
-package net.noncore.rss;
+package net.noncore.rss.args;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;

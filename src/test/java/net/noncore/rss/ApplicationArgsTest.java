@@ -1,8 +1,10 @@
 package net.noncore.rss;
 
-import net.noncore.rss.converters.ConvertType;
-import net.noncore.rss.reader.FileRssReader;
-import net.noncore.rss.reader.NetRssReader;
+import net.noncore.rss.args.ApplicationArgs;
+import net.noncore.rss.converters.CompositeRssConverter;
+import net.noncore.rss.writers.StdoutRssWriter;
+import net.noncore.rss.readers.FileRssReader;
+import net.noncore.rss.readers.NetRssReader;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,18 +13,18 @@ import org.junit.runners.JUnit4;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 @RunWith(JUnit4.class)
 public class ApplicationArgsTest {
+    ApplicationArgs appArgs;
+    CmdLineParser parser;
 
     @Before
     public void setUp() {
+        appArgs = new ApplicationArgs();
+        parser = new CmdLineParser(appArgs);
     }
 
     @After
@@ -30,72 +32,54 @@ public class ApplicationArgsTest {
     }
 
     @Test(expected = CmdLineException.class)
-    public void testNoArgs() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void 引数なし() throws CmdLineException {
         parser.parseArgument();
     }
     @Test
-    public void testOnlyURLInput() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void inputでURL指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss");
-        assertThat(appArgs.getInputResource().createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.getConvertTypes(), is(nullValue()));
-        assertThat(appArgs.getOutputPath(), is(nullValue()));
+        assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
+        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
+        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
     }
     @Test
-    public void testOnlyFileInput() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void inputでファイル指定() throws CmdLineException {
         parser.parseArgument("-i", "src/test/resources/articles.txt");
-        assertThat(appArgs.getInputResource().createRssReader(), is(instanceOf(FileRssReader.class)));
-        assertThat(appArgs.getConvertTypes(), is(nullValue()));
-        assertThat(appArgs.getOutputPath(), is(nullValue()));
+        assertThat(appArgs.createRssReader(), is(instanceOf(FileRssReader.class)));
+        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
+        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
     }
     @Test(expected = CmdLineException.class)
-    public void testOnlyConvert() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void inputなしでconvert指定() throws CmdLineException {
         parser.parseArgument("-c", "cut");
     }
     @Test(expected = CmdLineException.class)
-    public void testOnlyOutput() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void inputなしでoutput指定() throws CmdLineException {
         parser.parseArgument("-o", "output.txt");
     }
     @Test
-    public void testInputAndConvert() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void convert１つ指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-c", "name");
-        assertThat(appArgs.getInputResource().createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.getConvertTypes(), is(Collections.singletonList(ConvertType.NAME)));
-        assertThat(appArgs.getOutputPath(), is(nullValue()));
+        assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
+        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
+        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
     }
     @Test
-    public void testInputAndTowConvert() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void inputとconvert２つ指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-c", "name", "-c", "cut");
-        assertThat(appArgs.getInputResource().createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.getConvertTypes(), is(Arrays.asList(ConvertType.NAME, ConvertType.CUT)));
-        assertThat(appArgs.getOutputPath(), is(nullValue()));
+        assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
+        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
+        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
     }
     @Test(expected = CmdLineException.class)
-    public void testInputAndInvalidConvert() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void 存在しないinputを指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-c", "news");
     }
     @Test
-    public void testInputAndOutput() throws CmdLineException {
-        ApplicationArgs appArgs = new ApplicationArgs();
-        CmdLineParser parser = new CmdLineParser(appArgs);
+    public void すべての引数を指定() throws CmdLineException {
         parser.parseArgument("-i", "http://tech.uzabase.com/rss", "-o", "output.txt");
-        assertThat(appArgs.getInputResource().createRssReader(), is(instanceOf(NetRssReader.class)));
-        assertThat(appArgs.getConvertTypes(), is(nullValue()));
-        assertThat(appArgs.getOutputPath(), is(new File("output.txt")));
+        assertThat(appArgs.createRssReader(), is(instanceOf(NetRssReader.class)));
+        assertThat(appArgs.createRssConverter(), is(instanceOf(CompositeRssConverter.class)));
+        assertThat(appArgs.createRssWriter(), is(instanceOf(StdoutRssWriter.class)));
     }
 }

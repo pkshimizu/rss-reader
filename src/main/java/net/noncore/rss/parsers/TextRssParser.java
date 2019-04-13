@@ -1,4 +1,4 @@
-package net.noncore.rss.reader;
+package net.noncore.rss.parsers;
 
 import net.noncore.rss.Article;
 
@@ -8,18 +8,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FileRssReader implements RssReader {
-    private File file;
-
-    public FileRssReader(File file) {
-        this.file = file;
-    }
-
+public class TextRssParser implements RssParser {
     @Override
-    public List<Article> read() {
+    public List<Article> parse(InputStream input) throws IOException {
         List<Article> articles = new ArrayList<>();
         try (
-                FileReader reader = new FileReader(file);
+                Reader reader = new InputStreamReader(input);
                 BufferedReader bufferedReader = new BufferedReader(reader);
         ) {
             Pattern titlePattern = Pattern.compile("title: (.*)");
@@ -42,10 +36,6 @@ public class FileRssReader implements RssReader {
                 }
                 articles.add(new Article(title, body));
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(String.format("File not found : %s", file));
-        } catch (IOException e) {
-            throw new RuntimeException(String.format("File IO error : %s", file));
         }
         return articles;
     }
